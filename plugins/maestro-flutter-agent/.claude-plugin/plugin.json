@@ -1,0 +1,9 @@
+{
+  "name": "maestro-flutter-agent",
+  "description": "Agent skill that autonomously generates, runs, and fixes Maestro test flows (YAML) for Flutter mobile apps",
+  "author": {
+    "name": "asmz"
+  },
+  "license": "MIT",
+  "keywords": ["maestro", "flutter", "e2e", "testing", "mobile", "yaml"]
+}

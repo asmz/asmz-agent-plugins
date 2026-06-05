@@ -1,0 +1,17 @@
+{
+  "name": "asmz-claude-plugins",
+  "owner": {
+    "name": "asmz"
+  },
+  "description": "Claude Code plugins published by asmz",
+  "plugins": [
+    {
+      "name": "maestro-flutter-agent",
+      "source": "./plugins/maestro-flutter-agent",
+      "description": "Agent skill that autonomously generates, runs, and fixes Maestro test flows (YAML) for Flutter mobile apps",
+      "category": "testing",
+      "keywords": ["maestro", "flutter", "e2e", "testing", "mobile", "yaml"],
+      "license": "MIT"
+    }
+  ]
+}

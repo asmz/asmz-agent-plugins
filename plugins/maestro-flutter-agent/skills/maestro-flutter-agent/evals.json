@@ -1,0 +1,59 @@
+{
+  "skill_name": "maestro-flutter-agent",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "ボトムナビゲーションの各タブを順に切り替えて、選択中のタブと表示中の画面が正しいことを確認するMaestroフローを作って",
+      "expected_output": "ボトムタブ切り替えを行うMaestro YAMLフローが生成される。各タブ切り替え後に assertVisible でタブ選択状態（selected: true）と画面固有要素を確認するステップが含まれること。フロー前後の状態対称性が保たれていること",
+      "files": []
+    },
+    {
+      "id": 1,
+      "prompt": "検索画面で任意のキーワードを入力して検索し、検索結果を下にスクロールして確認するE2Eテストを書いて。検索後に結果が表示されることも確認したい",
+      "expected_output": "検索操作・結果確認・スクロールを含むMaestro YAMLフローが生成される。inputText でキーワード入力 → pressKey: enter → waitForAnimationToEnd → assertVisible で結果確認 → scrollUntilVisible でスクロールの順で構成されること。検索キーワードは環境変数化されていること",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "ドロワーメニューを開いて設定画面に遷移し、サブページをいくつか確認してから起点画面に戻るテストシナリオをMaestroで自動化して",
+      "expected_output": "ドロワー開閉と設定→サブページの遷移を確認するMaestro YAMLフローが生成される。各遷移後に assertVisible で画面確認、戻るボタンで前の画面に戻り、フロー終了時にドロワーが閉じた起点状態に戻っていること",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "リスト画面の先頭アイテムをタップして詳細画面に遷移し、詳細情報が表示されることを確認するMaestroフローを作って",
+      "expected_output": "リスト→詳細遷移を確認するMaestro YAMLフローが生成される。index: 0 で先頭アイテムを tapOn し、詳細画面固有の要素を assertVisible で確認、戻るボタンで一覧に戻ってフローが終了すること",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "既存のMaestroフローに、ホーム画面の検索バーをタップしてキーワード入力後に戻るステップを追加して",
+      "expected_output": "既存フロー保守の依頼として maestro-flutter-agent スキルが発動し、対象YAMLを編集してステップを追加する。フロー前後の状態対称性（生成ルール 8）を守り、追加後は mcp__maestro__run で構文・動作確認が行われること",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "ログイン後のOSダイアログ（通知許可・パスワード保存など）でMaestroフローが止まってしまう。フレーキー対応して",
+      "expected_output": "既存フロー保守の依頼として maestro-flutter-agent スキルが発動し、対象YAMLを編集してダイアログdismiss処理（tapOn ... optional: true または stopApp → launchApp）を追加する",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "Maestroフローの最後でドロワー（またはモーダル）が閉じきれずに次のフローと噛み合わない。直して",
+      "expected_output": "既存フロー保守の依頼として maestro-flutter-agent スキルが発動し、対象YAMLを編集してフロー終了時の状態（ドロワー/モーダルが閉じた状態）を整える。フロー前後の状態対称性（生成ルール 8）を守ること",
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "ログイン画面でメールアドレスとパスワードを入力してログインし、ホーム画面に遷移することを確認するMaestroフローを作って",
+      "expected_output": "認証フローのMaestro YAMLが生成される。認証情報は ${E2E_TEST_EMAIL} / ${E2E_TEST_PASSWORD} のように環境変数で外部化され、YAMLにハードコードされていないこと。ログイン後のホーム画面到達を assertVisible で確認すること",
+      "files": []
+    },
+    {
+      "id": 8,
+      "prompt": "フォーム画面の送信ボタンをタップするテストを作りたいが、対象ボタンに Semantics identifier がないので、まず識別子を追加してからMaestroフローを生成して",
+      "expected_output": "Semantics identifier 追加の提案（Dartウィジェットへの差分提示）が行われた上で、生成されるMaestro YAMLがその identifier を使った tapOn を含むこと。命名規則は [feature]_[element_type] パターンに沿い、Step 5.5 のアプリ再ビルド・再インストール手順が案内されること",
+      "files": []
+    }
+  ]
+}
