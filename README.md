@@ -1,4 +1,4 @@
-# asmz-claude-plugins
+# asmz-agent-plugins
 
 A marketplace of Claude Code plugins published by asmz.
 
@@ -14,10 +14,10 @@ Add this marketplace and install the plugin:
 
 ```bash
 # Add the marketplace
-/plugin marketplace add asmz/asmz-claude-plugins
+/plugin marketplace add asmz/asmz-agent-plugins
 
 # Install the plugin
-/plugin install maestro-flutter-agent@asmz-claude-plugins
+/plugin install maestro-flutter-agent@asmz-agent-plugins
 ```
 
 ## Requirements
