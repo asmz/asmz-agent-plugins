@@ -12,6 +12,14 @@
       "category": "testing",
       "keywords": ["maestro", "flutter", "e2e", "testing", "mobile", "yaml"],
       "license": "MIT"
+    },
+    {
+      "name": "maestro-react-native-agent",
+      "source": "./plugins/maestro-react-native-agent",
+      "description": "Agent skill that autonomously generates, runs, and fixes Maestro test flows (YAML) for React Native mobile apps (Expo Go and native binaries)",
+      "category": "testing",
+      "keywords": ["maestro", "react-native", "expo", "e2e", "testing", "mobile", "yaml"],
+      "license": "MIT"
     }
   ]
 }
