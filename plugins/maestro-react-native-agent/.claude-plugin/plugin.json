@@ -1,0 +1,7 @@
+{
+  "name": "maestro-react-native-agent",
+  "description": "Agent skill that autonomously generates, runs, and fixes Maestro test flows (YAML) for React Native mobile apps (Expo Go and native binaries)",
+  "author": {"name": "asmz"},
+  "license": "MIT",
+  "keywords": ["maestro", "react-native", "expo", "e2e", "testing", "mobile", "yaml"]
+}
