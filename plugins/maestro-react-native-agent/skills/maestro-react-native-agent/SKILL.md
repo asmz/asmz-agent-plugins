@@ -114,14 +114,10 @@ MCP 接続が確認できるまでは他の作業に着手しない。
   - `ios/<name>/Info.plist` の `CFBundleIdentifier`
   - `android/app/build.gradle` の `applicationId`
 
-### 1-4. Expo Go モード時の追加項目: プロジェクト名の確定
+### 1-4. Expo Go モード時の追加項目: Metro URL の確認
 
-Expo Go モードでは、`openLink` だけではアプリが直接開かず Expo Go のホーム画面に留まることがある（"Recently opened" にプロジェクトが並んだ状態で停止）。この救済のために、フローから "Recently opened" のセルをタップできるよう **プロジェクト表示名** を取得しておく:
-
-- `app.json` の `expo.name` を最優先（Expo Go のホームに表示される文字列）
-- フォールバック: `app.json` の `expo.slug` / `package.json` の `name`
-
-確定した名前は環境変数 `EXPO_GO_PROJECT_NAME` として記憶し、フロー先頭テンプレに埋め込む（Step 4 参照）。
+Expo Go モードでは `EXPO_GO_URL`（例: `exp://127.0.0.1:8081`）を環境変数として渡す。
+デフォルトポートは 8081。`npx expo start --port <N>` で変えている場合はそのポートを使う。
 
 ---
 
@@ -313,19 +309,11 @@ appId: ${APP_ID}        # host.exp.Exponent (iOS) / host.exp.exponent (Android)
 - startRecording:
     path: <screenshot_dir>/[scenario_name]
 # [シナリオの説明コメント]
-- launchApp
+# launchApp はスプラッシュ画面でアニメーションが静止するため waitForAnimationToEnd が早期終了し openLink が空振りする
+# stopApp で Expo Go をプロセスごと停止してから openLink で起動＋プロジェクトナビゲートを1ステップで行う
+- stopApp
 - openLink: ${EXPO_GO_URL}   # 例: exp://127.0.0.1:8081
 - waitForAnimationToEnd
-# Expo Go のホーム画面に留まった場合の救済:
-# "Recently opened" にプロジェクトが並んでいるだけのケースがあるため、その時はプロジェクト名のセルをタップする
-- runFlow:
-    when:
-      visible:
-        text: "Recently opened"
-    commands:
-      - tapOn:
-          text: ${EXPO_GO_PROJECT_NAME}
-      - waitForAnimationToEnd
 # ... 操作ステップ
 - stopRecording
 ```
@@ -347,7 +335,7 @@ appId: ${APP_ID}        # 例: com.example.app
 ### 生成ルール
 
 1. **appId は環境変数 `${APP_ID}` で管理** — ハードコードしない。Expo Go の場合も `${APP_ID}` 経由で渡す
-2. **Expo Go モードでは `openLink: ${EXPO_GO_URL}` + "Recently opened" 救済ブロックをテンプレに含める** — `openLink` だけで目的アプリが開かず Expo Go ホームに留まるケースがあるため、`runFlow.when.visible: "Recently opened"` でホーム画面検出時に `${EXPO_GO_PROJECT_NAME}` のセルをタップする救済を必ず入れる
+2. **Expo Go モードでは `stopApp` → `openLink: ${EXPO_GO_URL}` の順で起動する** — `launchApp` はスプラッシュ画面でアニメーションが静止し `openLink` が空振りする。`stopApp` で Expo Go をプロセスごと停止してから `openLink` することで、起動と URL ナビゲートを1ステップで確実に行える
 3. **`startRecording` / `stopRecording` で囲む** — スクリーンショット記録のため。`path` はプロジェクトの既存パターンに従う（既存パターンがなければ `maestro/screenshots/${TIMESTAMP}_${PLATFORM}/[scenario_name]` を標準とする）
 4. **`waitForAnimationToEnd` を適切に挿入** — 画面遷移やアニメーション後に挿入。ただし動画再生など永続的なアニメーション画面では使わない（コメントで理由を明記）
 5. **コメントで操作意図を記載** — 各ステップの意図をコメントで明確にする
@@ -585,7 +573,7 @@ mcp__maestro__list_devices で接続中のデバイス/シミュレータを確�
 | `files`（配列） | 生成した特定のYAMLファイルを実行 |
 | `dir` + タグ絞り込み | ディレクトリ単位での実行 |
 
-**実行時の環境変数**（最低限 `APP_ID` を渡す。Expo Go モードでは `EXPO_GO_URL` と `EXPO_GO_PROJECT_NAME` も渡す）:
+**実行時の環境変数**（最低限 `APP_ID` を渡す。Expo Go モードでは `EXPO_GO_URL` も渡す）:
 
 ```json
 // アプリバイナリモード
@@ -606,7 +594,6 @@ mcp__maestro__list_devices で接続中のデバイス/シミュレータを確�
   "env": {
     "APP_ID": "host.exp.Exponent",
     "EXPO_GO_URL": "exp://127.0.0.1:8081",
-    "EXPO_GO_PROJECT_NAME": "example-app",
     "TIMESTAMP": "<YYYYMMDD_HHMMSS>",
     "PLATFORM": "ios"
   }
@@ -677,7 +664,7 @@ E2E_TEST_PASSWORD=...
 フロー生成後、以下を確認する:
 
 - [ ] `appId` が環境変数（`${APP_ID}` 等）で管理されている
-- [ ] Expo Go モードの場合、フロー先頭に `openLink: ${EXPO_GO_URL}` と "Recently opened" 救済ブロック（`${EXPO_GO_PROJECT_NAME}` を tap）が含まれている
+- [ ] Expo Go モードの場合、フロー先頭が `stopApp` → `openLink: ${EXPO_GO_URL}` → `waitForAnimationToEnd` になっている
 - [ ] `startRecording` / `stopRecording` で囲まれている
 - [ ] 画面遷移後に `waitForAnimationToEnd` がある
 - [ ] `assertVisible` で各画面遷移の結果を検証している
